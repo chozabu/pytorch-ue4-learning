@@ -39,8 +39,8 @@ max_timesteps = 2000  # max timesteps in one episode
 
 directory = "./NNModels/AutoCar"  # save trained models
 #filename = "TD3_BLIND"
-loadfilename = "TD3_LIDAR8hardcore"
-filename = "TD3_LIDAR8hardcore2"
+loadfilename = "TD3_LIDAR8hardcore2"
+filename = "TD3_LIDAR8hardcore3"
 
 from pathlib import Path
 

@@ -53,8 +53,8 @@ max_timesteps = 2000  # max timesteps in one episode
 directory = "./NNModels/Walker3d"  # save trained models
 #filename = "TD3_BLIND"
 loadpol = True
-loadfilename = "TD3_BipedalWalker3dPLUSPLUStMIRROReMODCx10"
-filename =     "TD3_BipedalWalker3dPLUSPLUStMIRROReMODCx11"
+loadfilename = "TD3_BipedalWalker3dPLUSPLUStMIRROReMODCx11"
+filename =     "TD3_BipedalWalker3dPLUSPLUStMIRROReMODCx12"
 
 Path(directory).mkdir(parents=True, exist_ok=True)
 
@@ -268,12 +268,14 @@ class TorchWalkerMinion:
         #getting closer to target
         new_dist = self.get_target_dist()
         diffd = self.last_dist - new_dist
-        reward += diffd*.5
+        reward += diffd*.8
 
         self.last_dist = new_dist
 
         #staying alive
         reward += 2
+
+        #punish for feet being on the ground
         reward -= self.actor.rfoot_touch
         reward -= self.actor.lfoot_touch
 
@@ -293,9 +295,9 @@ class TorchWalkerMinion:
                                      0, 3)
         foot_dist_vec = mirror_foot_pos-RFP2d
         foot_dist = foot_dist_vec.length()
-        foot_dist = foot_dist*-.01
+        foot_dist = foot_dist*-.007
 
-        reward += (foot_dist+1.5)
+        reward += (foot_dist+1.1)
         # if self.actor.get_display_name() == "BipedalWalker3d":
         #     print((foot_dist+1.5))
         #     print(self.policy.eval_action(state, action))
