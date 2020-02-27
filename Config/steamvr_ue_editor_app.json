@@ -2,7 +2,7 @@
 	"source": "UE",
 	"applications": [
 		{
-			"app_key": "application.generated.ue.pytorchrl-11100242.ue4editor.exe",
+			"app_key": "application.generated.ue.pytorchrl-11590370.ue4editor.exe",
 			"launch_type": "url",
 			"url": "steam://launch/",
 			"action_manifest_path": "e:/Unreal Projects/PytorchRL/Config/SteamVRBindings/steamvr_manifest.json",
@@ -10,7 +10,7 @@
 			{
 				"en_us":
 				{
-					"name": "PytorchRL-11100242 [UE Editor]"
+					"name": "PytorchRL-11590370 [UE Editor]"
 				}
 			}
 		}

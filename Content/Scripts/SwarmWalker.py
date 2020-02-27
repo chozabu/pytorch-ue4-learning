@@ -27,6 +27,7 @@ state_dim += 1 #ground dist
 state_dim += 7*6 #ang/lin vel
 state_dim += 8 # ground sensors
 state_dim += 2 # contact sensors
+state_dim += 1 # target angle - calculated in PY
 
 #state_dim *= 2
 
@@ -53,8 +54,8 @@ max_timesteps = 2000  # max timesteps in one episode
 directory = "./NNModels/Walker3d"  # save trained models
 #filename = "TD3_BLIND"
 loadpol = True
-loadfilename = "TD3_BipedalWalker3dPLUSPLUStMIRROReMODCx11"
-filename =     "TD3_BipedalWalker3dPLUSPLUStMIRROReMODCx12"
+loadfilename = "TD3_BipedalWalker3dJointlim4"
+filename =     "TD3_BipedalWalker3dJointlim5"
 
 Path(directory).mkdir(parents=True, exist_ok=True)
 
@@ -132,10 +133,34 @@ class TorchWalkerMaster:
             time.sleep(0.01)
         self.can_thread = True
 
+    def thread_func_crit(self):
+        if self.replay_buffer.size:
+            al, c1l, c2l, prl = self.policy.update(self.replay_buffer, 200, batch_size, gamma, polyak, policy_noise,
+                                                   noise_clip, policy_delay)
+            print("aloss:{}, frame:{}, mem:{}".format(al, self.frame, self.replay_buffer.size))
+            self.writer.add_scalar('actor_loss',
+                                   al,
+                                   self.frame)
+            self.writer.add_scalar('c1_loss',
+                                   c1l,
+                                   self.frame)
+            self.writer.add_scalar('c2_loss',
+                                   c2l,
+                                   self.frame)
+
+        else:
+            print("skipping")
+            time.sleep(0.01)
+        self.can_thread = True
+
     def tick(self, delta_time):
         self.frame += 1
 
         if self.replay_buffer.size < 10000:
+            if self.can_thread:
+                x = threading.Thread(target=self.thread_func_crit)#, args=(1,))
+                x.start()
+                self.can_thread = False
             return
 
         if self.can_thread:
@@ -217,6 +242,10 @@ class TorchWalkerMinion:
         location = self.actor.get_actor_location()
         xd = location.x - self.target_x
         yd = location.y - self.target_y
+        #perhaps check furthest component instead?
+        #foreach component:
+            #get biggest dstsqr
+        #return sqrt(biggest)
         return math.sqrt(xd * xd + yd * yd)
 
     def reset_ep(self):
@@ -237,6 +266,9 @@ class TorchWalkerMinion:
 
         #############get observation#############
         obs = self.actor.update_observation()[0]
+
+        target_angle = self.get_target_angle()
+        obs.append(target_angle)
         # if self.first_frame:
         #     obs2 = obs+obs
         #     self.first_frame = False
@@ -265,42 +297,58 @@ class TorchWalkerMinion:
         reward = 0
         rdic = {}
 
+        #reward for keeping joints closer to neutral
+        rv = 0
+        for jo in self.actor.joint_obs:
+            rv += abs(jo-0.5)-.1
+        #print(-rv)
+        rv*=.5
+        reward -= rv
+
+
+        #reward for keeping head level
+        reward += (self.actor.body.get_up_vector().z-.4)*.5
+
         #getting closer to target
         new_dist = self.get_target_dist()
         diffd = self.last_dist - new_dist
-        reward += diffd*.8
+        reward += diffd*.5
 
         self.last_dist = new_dist
 
         #staying alive
-        reward += 2
+        reward += 2.0
 
         #punish for feet being on the ground
         reward -= self.actor.rfoot_touch
         reward -= self.actor.lfoot_touch
 
         #staying away from ground
-        reward += self.actor.ground_dist
+        reward += self.actor.ground_dist-.3
 
         #punish when feet location not mirrored!
-        BP2d = self.actor.body.get_world_location()*FVector(1,1,0)
-        LFP2d = self.actor.lfoot.get_world_location()*FVector(1,1,0)
-        RFP2d = self.actor.rfoot.get_world_location()*FVector(1,1,0)
-        lfv = BP2d-LFP2d
-        mirror_foot_pos = BP2d+lfv
+        # BP2d = self.actor.body.get_world_location()*FVector(1,1,0)
+        # LFP2d = self.actor.lfoot.get_world_location()*FVector(1,1,0)
+        # RFP2d = self.actor.rfoot.get_world_location()*FVector(1,1,0)
+        # lfv = BP2d-LFP2d
+        # mirror_foot_pos = BP2d+lfv
+        #
+        # self.uobject.draw_debug_line(mirror_foot_pos+FVector(0,0,self.actor.lfoot.get_world_location().z),
+        #                              RFP2d+FVector(0,0,self.actor.lfoot.get_world_location().z),
+        #                              FLinearColor(0, 1, 0),
+        #                              0, 3)
+        # foot_dist_vec = mirror_foot_pos-RFP2d
+        # foot_dist = foot_dist_vec.length()
+        # foot_dist = foot_dist*-.002
+        #
+        # reward += (foot_dist)
 
-        self.uobject.draw_debug_line(mirror_foot_pos+FVector(0,0,self.actor.lfoot.get_world_location().z),
-                                     RFP2d+FVector(0,0,self.actor.lfoot.get_world_location().z),
-                                     FLinearColor(0, 1, 0),
-                                     0, 3)
-        foot_dist_vec = mirror_foot_pos-RFP2d
-        foot_dist = foot_dist_vec.length()
-        foot_dist = foot_dist*-.007
 
-        reward += (foot_dist+1.1)
         # if self.actor.get_display_name() == "BipedalWalker3d":
-        #     print((foot_dist+1.5))
+        #    print((foot_dist+1.5))
         #     print(self.policy.eval_action(state, action))
+
+        self.actor.action_eval = self.policy.eval_action(state, action)
 
         #timeout, new EP
         done = 0
@@ -316,9 +364,27 @@ class TorchWalkerMinion:
             #print(state)
             self.actor.hit_body = False
             done = 1
-            reward -= 30
+            reward -= 70
+
+
+        # if self.actor.get_display_name() == "BipedalWalker3d":
+        #     print(" --- ")
+        #     print(" --- ")
+        #     print(" --- ")
+        #     print("joints")
+        #     print(-rv)
+        #     print("feet touching")
+        #     print(2-self.actor.rfoot_touch-self.actor.lfoot_touch)
+        #     print("ground dist")
+        #     print(self.actor.ground_dist-.3)
+        #     print("balance")
+        #     print((self.actor.body.get_up_vector().z-.4)*.5)
+        #     print("total")
+        #     print(reward)
 
         self.ep_reward += reward
+
+        self.actor.last_reward = reward
 
         ####### record action ############
         if self.ep_frame > self.random_frames-1:

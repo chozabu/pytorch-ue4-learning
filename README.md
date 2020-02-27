@@ -18,13 +18,18 @@ Working with this currently requires editing the python scripts to configure if 
 You will probably need to disable file loading.
 Files are currently saved to a folder like "/Epic Games/UE_4.24/Engine/Binaries/Win64/NNModels"
 
+## video
+
+https://i.gyazo.com/803b7bd236e042cf321c58652eaa4428.mp4 - bipedal walker, doing fairly well
+
 ## info
 
 training is done "on the fly" in a background thread from physical instances of an agent, all sharing the same neural network
 
 Network is TD3 based on this implementation: https://github.com/nikhilbarhate99/TD3-PyTorch-BipedalWalker-v2
 
-relevant info: 
+## interesting reads/projects 
+
 https://spinningup.openai.com/en/latest/  
 Reinforcement Learning: An Introduction. Second edition, in progress. Richard S. Sutton and Andrew G. Barto  
 unity-ml-agents
