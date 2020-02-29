@@ -2,19 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4538b175-af2d-44a4-83a8-e5b8c51e964f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SwarmQuadWalker.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TD4.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils4.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Config/steamvr_ue_editor_app.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../Config/steamvr_ue_editor_app.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SwarmWalker.py" beforeDir="false" afterPath="$PROJECT_DIR$/SwarmWalker.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TD3.py" beforeDir="false" afterPath="$PROJECT_DIR$/TD3.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../torchey/BipedalMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/../torchey/BipedalMap.umap" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../torchey/BipedalWalker3d.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/../torchey/BipedalWalker3d.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../torchey/QuadPedMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/../torchey/QuadPedMap.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../torchey/QuadpedalWalker3d.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/../torchey/QuadpedalWalker3d.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,9 +58,9 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1701" y="1174" key="com.intellij.ide.util.TipDialog" timestamp="1582653812603">
+    <state x="1701" y="1174" key="com.intellij.ide.util.TipDialog" timestamp="1582875564466">
       <screen x="0" y="0" width="3840" height="2120" />
     </state>
-    <state x="1701" y="1174" key="com.intellij.ide.util.TipDialog/0.0.3840.2120@0.0.3840.2120" timestamp="1582653812603" />
+    <state x="1701" y="1174" key="com.intellij.ide.util.TipDialog/0.0.3840.2120@0.0.3840.2120" timestamp="1582875564466" />
   </component>
 </project>

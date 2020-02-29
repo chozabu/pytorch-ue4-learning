@@ -25,6 +25,7 @@ state_dim = joint_obs_num
 state_dim += 2 #pitch/roll
 state_dim += 1 #ground dist
 state_dim += 7*6 #ang/lin vel
+state_dim += 7*6 #pos/rot
 state_dim += 8 # ground sensors
 state_dim += 2 # contact sensors
 state_dim += 1 # target angle - calculated in PY
@@ -54,8 +55,12 @@ max_timesteps = 2000  # max timesteps in one episode
 directory = "./NNModels/Walker3d"  # save trained models
 #filename = "TD3_BLIND"
 loadpol = True
-loadfilename = "TD3_BipedalWalker3dJointlim4"
-filename =     "TD3_BipedalWalker3dJointlim5"
+loadfilename = "TD3_BipedalWalker3dComplex2a"
+filename =     "TD3_BipedalWalker3dComplex2b"
+#TD3_BipedalWalker3dComplex2 angdamp = 600
+#TD3_BipedalWalker3dComplex2a angdamp = 100
+#TD3_BipedalWalker3dComplex2b angdamp = 20
+
 
 Path(directory).mkdir(parents=True, exist_ok=True)
 
@@ -157,10 +162,10 @@ class TorchWalkerMaster:
         self.frame += 1
 
         if self.replay_buffer.size < 10000:
-            if self.can_thread:
-                x = threading.Thread(target=self.thread_func_crit)#, args=(1,))
-                x.start()
-                self.can_thread = False
+            # if self.can_thread:
+            #     x = threading.Thread(target=self.thread_func_crit)#, args=(1,))
+            #     x.start()
+            #     self.can_thread = False
             return
 
         if self.can_thread:
@@ -217,7 +222,7 @@ class TorchWalkerMinion:
 
         self.bg_thread = None
 
-        self.exploration_noise = random.random()*1.5
+        self.exploration_noise = random.random()*0.6
         self.first_frame = True
 
     def gen_target(self):
@@ -370,6 +375,7 @@ class TorchWalkerMinion:
         # if self.actor.get_display_name() == "BipedalWalker3d":
         #     print(" --- ")
         #     print(" --- ")
+        #     print(self.replay_buffer.size)
         #     print(" --- ")
         #     print("joints")
         #     print(-rv)
