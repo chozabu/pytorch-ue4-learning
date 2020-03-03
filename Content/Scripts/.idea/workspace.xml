@@ -2,10 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4538b175-af2d-44a4-83a8-e5b8c51e964f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/SwarmSkeleton.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../torchey/SkelWalker3d.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../torchey/SkelWalkerMaster.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../torchey/skelMap.umap" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Source/PytorchRL/Private/HelperFunLib.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Source/PytorchRL/Public/HelperFunLib.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/../../Config/DefaultEngine.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SwarmWalker.py" beforeDir="false" afterPath="$PROJECT_DIR$/SwarmWalker.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../torchey/BipedalMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/../torchey/BipedalMap.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../torchey/BipedalWalker3d.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/../torchey/BipedalWalker3d.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PytorchRL.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/../../PytorchRL.uproject" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
