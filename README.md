@@ -1,5 +1,7 @@
 # PytorchRL
 
+Project no longer kept up to date - have a look at https://github.com/chozabu/UnrealPyTorchAgents instead!
+
 This is a project trying out RL with pytorch and ue4
 
 ## setup
